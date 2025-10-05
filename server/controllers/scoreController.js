@@ -1,19 +1,22 @@
 const Score = require('../models/Score');
 
 // @desc    Save a new score after a test
-const saveScore = async (req, res) => {
-    const { wpm, accuracy, mode } = req.body;
 
-    if (wpm === undefined || accuracy === undefined || !mode) {
-        return res.status(400).json({ message: 'Please provide wpm, accuracy, and mode' });
+const saveScore = async (req, res) => {
+    // ✅ Destructure the new field from the request body
+    const { wpm, accuracy, mode, totalErrors } = req.body;
+
+    if (wpm === undefined || accuracy === undefined || !mode || totalErrors === undefined) {
+        return res.status(400).json({ message: 'Please provide all fields' });
     }
 
     try {
         const newScore = new Score({
-            user: req.user.id, // from protect middleware
+            user: req.user.id,
             wpm,
             accuracy,
             mode,
+            totalErrors, // ✅ Save the new field to the database
         });
 
         const savedScore = await newScore.save();

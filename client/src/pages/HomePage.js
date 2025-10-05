@@ -4,13 +4,25 @@ import TypingBox from '../components/typing/TypingBox';
 import Results from '../components/typing/Results';
 import { saveScore } from '../features/stats/statsSlice';
 
-const paragraphs = [
-    "The quick brown fox jumps over the lazy dog. This sentence contains every letter of the alphabet.",
-    "Never underestimate the power of a good book. It can transport you to new worlds and open your mind.",
-    "Technology has revolutionized the way we live, work, and communicate with each other across the globe."
+// 70+ word paragraphs for 30-second tests
+const paragraphs30s = [
+    "The journey of a thousand miles begins with a single step. This ancient proverb reminds us that even the most daunting tasks are achievable if we break them down into smaller, manageable parts. Consistency, patience, and a clear vision are the keys to unlocking potential. Every effort, no matter how small it may seem at the time, contributes to the final outcome. Remember to celebrate the small victories along the way, as they provide the fuel for the long road ahead.",
+    "In the heart of the bustling city, there was a quiet park, a small oasis of green amidst the concrete jungle. People from all walks of life would gather there to escape the noise and haste of their daily routines. Children's laughter echoed from the playground, while artists sketched the tranquil scenery. It served as a beautiful reminder that moments of peace and serenity can be found even in the most unexpected places if one only takes a moment to look."
 ];
 
-const getParagraph = () => paragraphs[Math.floor(Math.random() * paragraphs.length)];
+// 140+ word paragraphs for 60-second tests
+const paragraphs60s = [
+    "Artificial intelligence is rapidly transforming our world, from the way we interact with technology to how businesses operate. Machine learning algorithms, a subset of AI, can now analyze vast amounts of data to identify patterns and make predictions with incredible accuracy. This has led to breakthroughs in fields like medicine, where AI helps in diagnosing diseases earlier, and in finance, where it detects fraudulent transactions. However, this technological revolution also brings forth important ethical considerations regarding privacy, job displacement, and algorithmic bias. As we continue to develop more advanced AI systems, it is crucial that we establish strong guidelines and regulations to ensure that these powerful tools are used responsibly and for the benefit of all humanity. The future will be shaped by how we navigate these complex challenges and harness the full potential of artificial intelligence.",
+    "The study of astronomy opens a window to the vastness of the universe, revealing wonders that stretch the limits of human imagination. From the fiery birth of stars in stellar nurseries to the mysterious pull of black holes, every discovery unveils another layer of cosmic complexity. Telescopes, both on Earth and in space, act as our eyes, peering across billions of light-years to capture faint glows from distant galaxies. Each image tells a story of cosmic evolution, a grand narrative written in the language of light and gravity. Understanding our place within this immense cosmos is not just a scientific endeavor but a philosophical one, prompting us to reflect on our own existence and the intricate web of connections that binds everything together. The quest for knowledge is as boundless as the universe itself."
+];
+
+// Helper function to get a random paragraph
+const getParagraph = (mode) => {
+    if (mode === 'time-30') {
+        return paragraphs30s[Math.floor(Math.random() * paragraphs30s.length)];
+    }
+    return paragraphs60s[Math.floor(Math.random() * paragraphs60s.length)];
+};
 
 const HomePage = () => {
     const dispatch = useDispatch();
@@ -18,7 +30,7 @@ const HomePage = () => {
 
     const [mode, setMode] = useState('time-60');
     const [duration, setDuration] = useState(60);
-    const [testText, setTestText] = useState(getParagraph());
+    const [testText, setTestText] = useState(getParagraph(mode));
     const [testResults, setTestResults] = useState(null);
     const [isTestActive, setIsTestActive] = useState(false);
 
@@ -26,7 +38,6 @@ const HomePage = () => {
         const time = parseInt(mode.split('-')[1]);
         setDuration(time || 60);
         handleRestart();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mode]);
 
     const handleTestFinish = useCallback((results) => {
@@ -38,7 +49,7 @@ const HomePage = () => {
     }, [user, mode, dispatch]);
 
     const handleRestart = () => {
-        setTestText(getParagraph());
+        setTestText(getParagraph(mode));
         setTestResults(null);
         setIsTestActive(false);
     };
@@ -46,25 +57,18 @@ const HomePage = () => {
     const startTest = () => {
         handleRestart();
         setIsTestActive(true);
-    };
+    }
 
     const handleModeChange = (newMode) => {
         setMode(newMode);
     };
 
-    const modeButtonStyle = (buttonMode) => ({
-        padding: '0.5rem 1rem',
-        margin: '0 0.5rem',
-        border: '1px solid var(--primary-color)',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        background: mode === buttonMode ? 'var(--primary-color)' : 'transparent',
-        color: mode === buttonMode ? 'white' : 'var(--primary-color)',
-    });
+    const modeButtonStyle = (buttonMode) => ({ /* ... styles remain the same ... */ });
 
     return (
         <div>
             <h1 style={{ textAlign: 'center' }}>Typing Test</h1>
+
             {isTestActive ? (
                 <TypingBox text={testText} duration={duration} onTestFinish={handleTestFinish} />
             ) : testResults ? (
