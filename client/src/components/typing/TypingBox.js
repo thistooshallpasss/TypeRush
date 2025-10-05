@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'; // Added useCallback
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './TypingBox.css';
 
 const TypingBox = ({ text, duration, onTestFinish }) => {
@@ -14,18 +14,13 @@ const TypingBox = ({ text, duration, onTestFinish }) => {
         inputRef.current.focus();
     }, []);
 
-    // Wrapped in useCallback with dependencies
     const calculateResults = useCallback(() => {
         const timeTaken = duration - timeRemaining;
-        // Prevent division by zero if timeTaken is 0
         const grossWPM = timeTaken > 0 ? (userInput.length / 5) / (timeTaken / 60) : 0;
-        const accuracy = userInput.length > 0
-            ? Math.max(0, Math.round(((userInput.length - errors) / userInput.length) * 100))
-            : 100;
+        const accuracy = userInput.length > 0 ? Math.max(0, Math.round(((userInput.length - errors) / userInput.length) * 100)) : 100;
         return { wpm: Math.round(grossWPM), accuracy, time: timeTaken };
     }, [duration, timeRemaining, userInput, errors]);
 
-    // Countdown timer logic with updated dependencies
     useEffect(() => {
         if (isRunning && timeRemaining > 0) {
             intervalRef.current = setInterval(() => {

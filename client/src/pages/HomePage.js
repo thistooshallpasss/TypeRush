@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'; // Added useCallback
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TypingBox from '../components/typing/TypingBox';
 import Results from '../components/typing/Results';
@@ -7,9 +7,7 @@ import { saveScore } from '../features/stats/statsSlice';
 const paragraphs = [
     "The quick brown fox jumps over the lazy dog. This sentence contains every letter of the alphabet.",
     "Never underestimate the power of a good book. It can transport you to new worlds and open your mind.",
-    "Technology has revolutionized the way we live, work, and communicate with each other across the globe.",
-    "The sun always shines brightest after the rain. Remember that challenges are temporary and serve as lessons.",
-    "To be successful, the first thing to do is fall in love with your work. It is the key to motivation."
+    "Technology has revolutionized the way we live, work, and communicate with each other across the globe."
 ];
 
 const getParagraph = () => paragraphs[Math.floor(Math.random() * paragraphs.length)];
@@ -28,9 +26,9 @@ const HomePage = () => {
         const time = parseInt(mode.split('-')[1]);
         setDuration(time || 60);
         handleRestart();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mode]);
 
-    // Wrapped with useCallback and added dependencies
     const handleTestFinish = useCallback((results) => {
         setTestResults(results);
         setIsTestActive(false);
@@ -67,7 +65,6 @@ const HomePage = () => {
     return (
         <div>
             <h1 style={{ textAlign: 'center' }}>Typing Test</h1>
-
             {isTestActive ? (
                 <TypingBox text={testText} duration={duration} onTestFinish={handleTestFinish} />
             ) : testResults ? (
