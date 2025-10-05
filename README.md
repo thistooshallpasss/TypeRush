@@ -65,3 +65,35 @@ To run this project locally, you will need to create a `.env` file in the `/serv
     npm start
     ```
 The application will be available at `http://localhost:3000`.
+
+
+
+
+## Glimpses of the Page
+
+### Dark Mode 0
+![Dark Mode 0](client/src/assets/dark_mode_0.png)
+
+### Dark Mode
+![Dark Mode](client/src/assets/dark_mode.png)
+
+### Landing Page
+![Landing Page](client/src/assets/landing_page.png)
+
+### Leaderboard
+![Leaderboard](client/src/assets//Leaderboard.png)
+
+### Login
+![Login](client/src/assets/Login.png)
+
+### Main Page 1
+![Main Page 0](client/src/assets/main_page_0.png)
+
+### Main Page 2
+![Main Page](client/src/assets/main_page.png)
+
+### Navbar
+![Navbar](client/src/assets/Navbar.png)
+
+### Register
+![Register](client/src/assets//Register.png)
